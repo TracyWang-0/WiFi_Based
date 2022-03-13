@@ -27,20 +27,21 @@ def process_save_all_data(Hybrid_all_out_filePath):
     hybrid_data = pd.DataFrame(hybrid_data)
     hybrid_data.to_csv(Hybrid_all_out_filePath, header=None, index=False, index_label=None)
 
-def get_save_wifi_data(Hybrid_all_filePath, Hybrid_wifi_out_filePath):
-    all_data = pd.read_csv(Hybrid_all_filePath)
-    # 删除地磁数据
-    wifi_data = all_data.drop(axis=1, columns=['meas X', 'meas Y', 'meas Z'])
-    # 删除蓝牙数据
-    # Wifi_data = all_data.drop()
+def learn_attrs(Hybrid_wifi_out_filePath):
+    wifi_data = pd.read_csv(Hybrid_wifi_out_filePath)
 
-    print(f'wifi_data.shape:{wifi_data.shape}')
-    wifi_data.to_csv(Hybrid_wifi_out_filePath, index=False, index_label=None)
+    # 依次获取前7个属性，然后查看共有多少个
+    for idx in range(7):
+        attr = wifi_data.iloc[:, idx]
+        x = np.unique(attr)
+        print(x.shape)
+
+
 
 if __name__ == '__main__':
     # 需要保存的文件位置
     Hybrid_all_out_filePath = '../data/out/Hybrid_all_dataset.csv'
     Hybrid_wifi_out_filePath = '../data/out/Hybrid_wifi_dataset.csv'
 
-    process_save_all_data(Hybrid_all_out_filePath)
-    # get_save_wifi_data(Hybrid_all_out_filePath, Hybrid_wifi_out_filePath)
+    # process_save_all_data(Hybrid_all_out_filePath)
+    learn_attrs(Hybrid_wifi_out_filePath)
